@@ -88,8 +88,13 @@
   .task.done .check svg{opacity:1}
   .check svg{opacity:0;transition:opacity .15s}
   .task-tg{flex-shrink:0;margin-top:1px}
-  .task-txt{color:var(--ink);transition:color .15s}
+  .task-txt{color:var(--ink);transition:color .15s;flex:1}
   .task.done .task-txt{color:var(--ink-faint);text-decoration:line-through}
+  .task-more{background:none;border:none;color:var(--ink-faint);cursor:pointer;padding:2px;margin-top:1px;flex-shrink:0;display:flex;transition:transform .25s,color .15s}
+  .task-more:hover{color:var(--acc)}
+  .task-row.open .task-more{transform:rotate(180deg);color:var(--acc)}
+  .task-detail{display:none;font-size:12px;color:var(--ink-dim);line-height:1.55;padding:6px 0 10px 47px;border-bottom:1px dotted var(--line);margin-bottom:2px}
+  .task-row.open .task-detail{display:block;animation:fade .2s}
 
   .control{margin-top:14px;border-left:2px solid var(--acc);background:var(--panel-2);padding:11px 15px;border-radius:0 8px 8px 0;font-size:12.5px;color:var(--ink-dim)}
   .control b{color:var(--acc);font-weight:500}
@@ -99,6 +104,8 @@
   .extra ul{list-style:none}
   .extra li{font-size:13px;color:var(--ink-dim);padding:5px 0 5px 18px;position:relative}
   .extra li::before{content:"›";position:absolute;left:0;color:var(--acc)}
+  .extra ul.res li{padding-bottom:8px}
+  .extra ul.res a{font-weight:500}
   .extra+.extra{margin-top:14px}
 
   footer{border-top:1px solid var(--line);margin-top:34px;padding:26px 0 50px;font-size:12px;color:var(--ink-faint)}
@@ -122,7 +129,7 @@
   <div class="wrap">
     <div class="eyebrow">SEC//PLAN <span class="blink"></span></div>
     <h1>Программа<span class="slash"> / </span>8 недель<br>до junior</h1>
-    <p class="sub">Пошаговый план входа в кибербезопасность: от Linux и сетей до портфолио и собеседований. Отмечай задачи галочками — прогресс сохраняется в браузере.</p>
+    <p class="sub">Пошаговый план входа в кибербезопасность: от Linux и сетей до портфолио и собеседований. Жми галочку, чтобы отметить задачу, и стрелку ▾ — чтобы раскрыть подробности. Прогресс сохраняется в браузере.</p>
     <div class="meta">
       <span><b>профиль:</b> <span id="mProfile"></span></span>
     </div>

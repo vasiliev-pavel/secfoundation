@@ -65,11 +65,17 @@
       day.items.forEach((it,i)=>{
         const id=tid(week.n,day.d,i);
         const isDone=done[id]?" done":"";
+        const detail=it[2]?`<div class="task-detail">${esc(it[2])}</div>`:"";
+        const hasDetail=it[2]?" has-detail":"";
         tasksHtml+=
-          `<div class="task${isDone}" data-id="${id}" data-w="${week.n}">
-             <div class="check">${checkSvg}</div>
-             <span class="tg tg-${it[0]} task-tg">${it[0]}</span>
-             <span class="task-txt">${esc(it[1])}</span>
+          `<div class="task-row${hasDetail}">
+             <div class="task${isDone}" data-id="${id}" data-w="${week.n}">
+               <div class="check">${checkSvg}</div>
+               <span class="tg tg-${it[0]} task-tg">${it[0]}</span>
+               <span class="task-txt">${esc(it[1])}</span>
+               ${it[2]?'<button class="task-more" aria-label="подробнее"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>':''}
+             </div>
+             ${detail}
            </div>`;
       });
       dEl.innerHTML=
@@ -90,8 +96,17 @@
     head.addEventListener("click",()=>el.classList.toggle("open"));
   });
 
-  // task toggling (event delegation)
+  // task toggling + detail expand (event delegation)
   host.addEventListener("click",e=>{
+    // клик по кнопке "подробнее" — раскрыть/свернуть детали
+    const more=e.target.closest(".task-more");
+    if(more){
+      e.stopPropagation();
+      const row=more.closest(".task-row");
+      if(row) row.classList.toggle("open");
+      return;
+    }
+    // клик по задаче — отметить выполнение
     const t=e.target.closest(".task");
     if(!t) return;
     const id=t.dataset.id, w=parseInt(t.dataset.w,10);
@@ -125,8 +140,18 @@
     else hint.textContent=`Выполнено ${ok} из ${total} задач. Двигайся в своём темпе — главное усвоение, а не срок.`;
   }
 
-  // ---- extra blocks: principles + after ----
+  // ---- extra blocks: quizzes + principles + after ----
   const extraHost=document.getElementById("extraHost");
+
+  if(PLAN.quizzes && PLAN.quizzes.length){
+    const qz=document.createElement("div");
+    qz.className="extra";
+    qz.innerHTML=`<h3>Бесплатные ресурсы для самопроверки</h3><ul class="res">${
+      PLAN.quizzes.map(q=>`<li><a href="${esc(q[1])}" target="_blank" rel="noopener">${esc(q[0])}</a> — ${esc(q[2])}</li>`).join("")
+    }</ul>`;
+    extraHost.appendChild(qz);
+  }
+
   const pr=document.createElement("div");
   pr.className="extra";
   pr.innerHTML=`<h3>Сквозные принципы</h3><ul>${PLAN.principles.map(p=>`<li>${esc(p)}</li>`).join("")}</ul>`;
